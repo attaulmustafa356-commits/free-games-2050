@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREE GAMES 2050 // ULTIMATE 10 UNIQUE ARCADE</title>
+    <style>
+        :root {
+            --bg-deep: #02040a;
+            --panel-bg: rgba(8, 15, 30, 0.92);
+            --neon-cyan: #00f0ff;
+            --neon-pink: #ff007f;
+            --neon-green: #00ff66;
+            --neon-gold: #ffcc00;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden;
+        }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(2, 4, 10, 0.95);
+            border-bottom: 2px solid var(--neon-cyan);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-area h1 {
+            font-size: 1.8rem;
+            color: var(--neon-cyan);
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        .logo-area p {
+            font-size: 0.75rem;
+            color: var(--neon-pink);
+            letter-spacing: 2px;
+            margin-top: 3px;
+        }
+
+        .ad-banner-top {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px dashed var(--neon-gold);
+            padding: 8px 25px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--neon-gold);
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--panel-bg);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-section h2 {
+            font-size: 2.2rem;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .hero-section p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .game-card {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 0, 127, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.4);
+        }
+
+        .game-thumb {
+            height: 160px;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            border-bottom: 1px solid rgba(255, 0, 127, 0.2);
+            position: relative;
+        }
+
+        .badge-2050 {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--neon-pink);
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .game-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-info h3 {
+            font-size: 1.15rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .game-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            border: none;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .play-btn:hover {
+            opacity: 0.9;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        #gameModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 4, 10, 0.96);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-header {
+            width: 90%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--neon-cyan);
+            padding-bottom: 10px;
+        }
+
+        .modal-header h2 {
+            color: var(--neon-cyan);
+            font-size: 1.4rem;
+        }
+
+        .close-btn {
+            background: var(--neon-pink);
+            border: none;
+            color: #fff;
+            padding: 6px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .game-frame-box {
+            width: 90%;
+            max-width: 900px;
+            height: 500px;
+            background: #000;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        footer {
+            margin-top: 60px;
+            background: rgba(2, 4, 10, 0.9);
+            border-top: 1px solid rgba(0, 240, 255, 0.2);
+            text-align: center;
+            padding: 25px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bgCanvas"></canvas>
+
+    <header>
+        <div class="logo-area">
+            <h1>FREE GAMES 2050</h1>
+            <p>10 EXCLUSIVE UNIQUE QUANTUM ARCADE</p>
+        </div>
+        <div class="ad-banner-top">
+            [MONETIZED ADSENSE SLOT 2050]
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h2>10 ULTIMATE FUTURISTIC GAMES</h2>
+            <p>Har game ka apna alag aur mazedaar engine hai. Koi bhi game same nahi hai!</p>
+        </div>
+
+        <div class="games-grid" id="gamesContainer"></div>
+    </div>
+
+    <div id="gameModal">
+        <div class="modal-header">
+            <h2 id="modalTitle">LOADING...</h2>
+            <button class="close-btn" onclick="closeGameModal()">QUIT [X]</button>
+        </div>
+        <div class="game-frame-box" id="gameScreenContainer">
+            <p style="color: var(--neon-cyan);">INITIALIZING...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2050 FREE GAMES NETWORK. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // Background Matrix Animation
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let particles = [];
+        for(let i=0; i<80; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speedY: Math.random() * 0.8 + 0.2,
+                color: Math.random() > 0.5 ? '#00f0ff' : '#ff007f'
+            });
+        }
+        function animateBg() {
+            ctx.fillStyle = 'rgba(2, 4, 10, 0.3)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                p.y += p.speedY;
+                if(p.y > canvas.height) p.y = 0;
+            });
+            requestAnimationFrame(animateBg);
+        }
+        animateBg();
+
+        // 10 Distinct Unique Games Database
+        const gamesData = [
+            { id: 1, name: "Cyber Hover-Car 2050", icon: "🏎️", desc: "3-Lane high speed futuristic traffic dodging simulator." },
+            { id: 2, name: "Quantum Drone Shooter", icon: "🚀", desc: "Space combat against rogue AI vortex swarm." },
+            { id: 3, name: "Holographic Maze Escape", icon: "🧩", desc: "Guide energy node through shifting firewall labyrinths." },
+            { id: 4, name: "Plasma Shield Defender", icon: "🛡️", desc: "Protect core reactor base from vertical laser meteor strikes." },
+            { id: 5, name: "Cyber Katana Slash", icon: "⚔️", desc: "Slice incoming glowing cyber nodes with precise timing." },
+            { id: 6, name: "Neural Link Memory", icon: "🧠", desc: "Match quantum flashing sequence blocks to unlock mainframe." },
+            { id: 7, name: "Zero-G Orbital Pong", icon: "⚽", desc: "Futuristic physics zero-gravity rebound challenge." },
+            { id: 8, name: "Mecha Titan Boss Battle", icon: "🦾", desc: "Intense combat boss showdown against heavy automated armor." },
+            { id: 9, name: "Quantum Code Breaker", icon: "💻", desc: "Fast-paced digital token collector and hash rate booster." },
+            { id: 10, name: "Time Rift Catcher", icon: "⏳", desc: "Catch temporal clocks and avoid hazardous red time bombs." }
+        ];
+
+        function renderGames() {
+            const container = document.getElementById('gamesContainer');
+            container.innerHTML = '';
+            gamesData.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <div class="game-thumb">
+                        ${game.icon}
+                        <div class="badge-2050">UNIQUE 3D</div>
+                    </div>
+                    <div class="game-info">
+                        <div>
+                            <h3>${game.name}</h3>
+                            <p>${game.desc}</p>
+                        </div>
+                        <button class="play-btn" onclick="launchGame(${game.id}, '${game.name}')">PLAY NOW</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        renderGames();
+
+        let currentGameInterval = null;
+
+        function launchGame(gameId, gameName) {
+            if(currentGameInterval) clearInterval(currentGameInterval);
+            document.getElementById('modalTitle').innerText = gameName.toUpperCase() + " // LIVE";
+            document.getElementById('gameModal').style.display = 'flex';
+            
+            const screen = document.getElementById('gameScreenContainer');
+            screen.innerHTML = `
+                <div style="text-align:center; padding: 20px;">
+                    <h3 style="color: var(--neon-cyan); font-size: 1.4rem; margin-bottom: 15px;">${gameName}</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 25px;">Ready your controls. Click Start Engine!</p>
+                    <button class="play-btn" style="padding: 12px 35px; font-size: 1rem;" onclick="startUniqueEngine(${gameId})">START ENGINE</button>
+                </div>
+            `;
+        }
+
+        // Distinct Game Engines for each of the 10 games
+        function startUniqueEngine(id) {
+            const screen = document.getElementById('gameScreenContainer');
+            screen.innerHTML = `<canvas id="uniqueCanvas" width="850" height="460" style="width:100%; height:100%; background:#01030d; display:block;"></canvas>`;
+            const sCanvas = document.getElementById('uniqueCanvas');
+            const sCtx = sCanvas.getContext('2d');
+
+            let score = 0;
+            let gameOver = false;
+
+            // --- GAME 1: Cyber Hover-Car Racing ---
+            if (id === 1) {
+                let carX = 400, obstacles = [];
+                window.onkeydown = (e) => {
+                    if(e.key === 'ArrowLeft' && carX > 250) carX -= 150;
+                    if(e.key === 'ArrowRight' && carX < 550) carX += 150;
+                };
+                currentGameInterval = setInterval(() => {
+                    if(gameOver) return;
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+                    // Roads
+                    sCtx.strokeStyle = '#00f0ff'; sCtx.lineWidth = 3;
+                    sCtx.beginPath(); sCtx.moveTo(250, 0); sCtx.lineTo(250, 460); sCtx.stroke();
+                    sCtx.beginPath(); sCtx.moveTo(550, 0); sCtx.lineTo(550, 460); sCtx.stroke();
+
+                    if(Math.random() < 0.04) {
+                        obstacles.push({x: [275, 425, 575][Math.floor(Math.random()*3)], y: -60});
+                    }
+                    sCtx.fillStyle = '#ff007f';
+                    obstacles.forEach(o => {
+                        o.y += 7;
+                        sCtx.fillRect(o.x, o.y, 50, 40);
+                        if(o.y > 360 && o.y < 430 && Math.abs(o.x - carX) < 40) gameOver = true;
+                    });
+                    obstacles = obstacles.filter(o => o.y < 500);
+
+                    // Player Car
+                    sCtx.fillStyle = '#00ff66';
+                    sCtx.fillRect(carX, 380, 50, 50);
+
+                    score += 10;
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("CONTROLS: LEFT / RIGHT ARROWS", 20, 55);
+
+                    if(gameOver) drawGameOver(sCtx, score);
+                }, 30);
+            }
+
+            // --- GAME 2: Quantum Drone Shooter ---
+            else if (id === 2) {
+                let shipX = 400, bullets = [], enemies = [];
+                window.onkeydown = (e) => {
+                    if(e.key === 'ArrowLeft' && shipX > 30) shipX -= 25;
+                    if(e.key === 'ArrowRight' && shipX < 820) shipX += 25;
+                    if(e.code === 'Space') bullets.push({x: shipX + 18, y: 400});
+                };
+                currentGameInterval = setInterval(() => {
+                    if(gameOver) return;
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+
+                    if(Math.random() < 0.035) {
+                        enemies.push({x: Math.random() * 780, y: 0, speed: Math.random() * 2 + 1.5});
+                    }
+                    sCtx.fillStyle = '#ffcc00';
+                    bullets.forEach(b => { b.y -= 10; sCtx.fillRect(b.x, b.y, 4, 12); });
+                    bullets = bullets.filter(b => b.y > 0);
+
+                    sCtx.fillStyle = '#ff007f';
+                    enemies.forEach(en => {
+                        en.y += en.speed;
+                        sCtx.fillRect(en.x, en.y, 35, 35);
+                        bullets.forEach((b, bi) => {
+                            if(b.x > en.x && b.x < en.x+35 && b.y > en.y && b.y < en.y+35) {
+                                enemies.splice(enemies.indexOf(en), 1);
+                                bullets.splice(bi, 1);
+                                score += 100;
+                            }
+                        });
+                        if(en.y > 420) gameOver = true;
+                    });
+                    enemies = enemies.filter(en => en.y < 460);
+
+                    sCtx.fillStyle = '#00f0ff';
+                    sCtx.fillRect(shipX, 410, 40, 25);
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("ARROWS TO MOVE, SPACEBAR TO SHOOT", 20, 55);
+
+                    if(gameOver) drawGameOver(sCtx, score);
+                }, 30);
+            }
+
+            // --- GAME 3: Holographic Maze Escape ---
+            else if (id === 3) {
+                let px = 50, py = 230, targetX = 780, targetY = 230;
+                window.onkeydown = (e) => {
+                    if(e.key === 'ArrowUp' && py > 50) py -= 20;
+                    if(e.key === 'ArrowDown' && py < 410) py += 20;
+                    if(e.key === 'ArrowLeft' && px > 50) px -= 20;
+                    if(e.key === 'ArrowRight' && px < 800) px += 20;
+                };
+                currentGameInterval = setInterval(() => {
+                    if(gameOver) return;
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+
+                    // Draw Target Goal
+                    sCtx.fillStyle = '#00ff66';
+                    sCtx.fillRect(targetX, targetY, 40, 40);
+
+                    // Draw Player
+                    sCtx.fillStyle = '#00f0ff';
+                    sCtx.fillRect(px, py, 25, 25);
+
+                    if(Math.hypot(px - targetX, py - targetY) < 25) {
+                        score += 500;
+                        targetX = Math.random() * 600 + 100;
+                        targetY = Math.random() * 300 + 50;
+                    }
+
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("NAVIGATE TO THE GREEN QUANTUM TARGET", 20, 55);
+                }, 30);
+            }
+
+            // --- GAME 4: Plasma Shield Defender ---
+            else if (id === 4) {
+                let shieldX = 400, missiles = [];
+                window.onkeydown = (e) => {
+                    if(e.key === 'ArrowLeft' && shieldX > 50) shieldX -= 30;
+                    if(e.key === 'ArrowRight' && shieldX < 800) shieldX += 30;
+                };
+                currentGameInterval = setInterval(() => {
+                    if(gameOver) return;
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+
+                    if(Math.random() < 0.04) {
+                        missiles.push({x: Math.random() * 750 + 50, y: 0, speed: Math.random() * 3 + 2});
+                    }
+
+                    sCtx.fillStyle = '#ff007f';
+                    missiles.forEach(m => {
+                        m.y += m.speed;
+                        sCtx.fillRect(m.x, m.y, 20, 30);
+                        if(m.y > 400 && Math.abs(m.x - shieldX) < 50) {
+                            missiles.splice(missiles.indexOf(m), 1);
+                            score += 50;
+                        }
+                        if(m.y > 440) gameOver = true;
+                    });
+                    missiles = missiles.filter(m => m.y < 460);
+
+                    // Base Shield
+                    sCtx.fillStyle = '#00f0ff';
+                    sCtx.fillRect(shieldX - 40, 420, 80, 15);
+
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("BLOCK FALLING MISSILES WITH SHIELD", 20, 55);
+
+                    if(gameOver) drawGameOver(sCtx, score);
+                }, 30);
+            }
+
+            // --- GAME 5: Cyber Katana Slash ---
+            else if (id === 5) {
+                let nodes = [];
+                sCanvas.onclick = (e) => {
+                    const rect = sCanvas.getBoundingClientRect();
+                    const mx = e.clientX - rect.left;
+                    const my = e.clientY - rect.top;
+                    nodes.forEach((n, idx) => {
+                        if(Math.hypot(n.x - mx, n.y - my) < 35) {
+                            nodes.splice(idx, 1);
+                            score += 100;
+                        }
+                    });
+                };
+                currentGameInterval = setInterval(() => {
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+                    if(Math.random() < 0.04) {
+                        nodes.push({x: Math.random() * 700 + 75, y: Math.random() * 350 + 50, r: 25});
+                    }
+                    sCtx.fillStyle = '#ffcc00';
+                    nodes.forEach(n => {
+                        sCtx.beginPath(); sCtx.arc(n.x, n.y, n.r, 0, Math.PI * 2); sCtx.fill();
+                    });
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("CLICK/SLASH THE GLOWING NODES FAST!", 20, 55);
+                }, 30);
+            }
+
+            // --- GAME 6: Neural Link Memory ---
+            else if (id === 6) {
+                let targetBox = Math.floor(Math.random() * 4);
+                let timer = 0;
+                sCanvas.onclick = (e) => {
+                    const rect = sCanvas.getBoundingClientRect();
+                    const mx = e.clientX - rect.left;
+                    const my = e.clientY - rect.top;
+                    let clicked = Math.floor(mx / 200);
+                    if(clicked === targetBox) {
+                        score += 200;
+                        targetBox = Math.floor(Math.random() * 4);
+                    } else {
+                        gameOver = true;
+                    }
+                };
+                currentGameInterval = setInterval(() => {
+                    if(gameOver) return;
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+                    for(let i=0; i<4; i++) {
+                        sCtx.fillStyle = (i === targetBox) ? '#00ff66' : '#1e1b4b';
+                        sCtx.fillRect(i * 210 + 20, 150, 180, 180);
+                    }
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("CLICK THE GLOWING GREEN NEURAL BOX", 20, 55);
+                    if(gameOver) drawGameOver(sCtx, score);
+                }, 30);
+            }
+
+            // --- GAME 7: Zero-G Orbital Pong ---
+            else if (id === 7) {
+                let bx = 425, by = 230, bvx = 4, bvy = 3, paddleY = 180;
+                window.onkeydown = (e) => {
+                    if(e.key === 'ArrowUp' && paddleY > 20) paddleY -= 30;
+                    if(e.key === 'ArrowDown' && paddleY < 360) paddleY += 30;
+                };
+                currentGameInterval = setInterval(() => {
+                    if(gameOver) return;
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+                    bx += bvx; by += bvy;
+                    if(by <= 0 || by >= 450) bvy *= -1;
+                    if(bx >= 830) bvx *= -1;
+                    if(bx <= 50 && by >= paddleY && by <= paddleY + 100) {
+                        bvx *= -1; score += 50;
+                    }
+                    if(bx < 0) gameOver = true;
+
+                    sCtx.fillStyle = '#00f0ff'; sCtx.fillRect(30, paddleY, 15, 100);
+                    sCtx.fillStyle = '#ff007f'; sCtx.beginPath(); sCtx.arc(bx, by, 12, 0, Math.PI*2); sCtx.fill();
+
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("UP / DOWN ARROWS TO PADDLE", 20, 55);
+                    if(gameOver) drawGameOver(sCtx, score);
+                }, 30);
+            }
+
+            // --- GAME 8: Mecha Titan Boss Battle ---
+            else if (id === 8) {
+                let bossHp = 100, px = 400, lasers = [];
+                window.onkeydown = (e) => {
+                    if(e.key === 'ArrowLeft' && px > 50) px -= 30;
+                    if(e.key === 'ArrowRight' && px < 780) px += 30;
+                    if(e.code === 'Space') {
+                        bossHp -= 5;
+                        score += 20;
+                    }
+                };
+                currentGameInterval = setInterval(() => {
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+                    // Draw Boss
+                    sCtx.fillStyle = '#ff007f'; sCtx.fillRect(325, 50, 200, 80);
+                    sCtx.fillStyle = '#00ff66'; sCtx.fillRect(325, 30, bossHp * 2, 10);
+
+                    // Player
+                    sCtx.fillStyle = '#00f0ff'; sCtx.fillRect(px, 400, 40, 30);
+
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("MOVE ARROWS, SPACEBAR TO ATTACK MECHA TITAN", 20, 55);
+
+                    if(bossHp <= 0) {
+                        score += 1000;
+                        bossHp = 100;
+                    }
+                }, 30);
+            }
+
+            // --- GAME 9: Quantum Code Breaker ---
+            else if (id === 9) {
+                let codeTarget = Math.floor(Math.random() * 900 + 100), inputVal = "";
+                window.onkeydown = (e) => {
+                    if(!isNaN(e.key)) {
+                        inputVal += e.key;
+                        if(parseInt(inputVal) === codeTarget) {
+                            score += 300;
+                            codeTarget = Math.floor(Math.random() * 900 + 100);
+                            inputVal = "";
+                        } else if(inputVal.length > 3) {
+                            inputVal = "";
+                        }
+                    }
+                };
+                currentGameInterval = setInterval(() => {
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+                    sCtx.fillStyle = '#00f0ff'; sCtx.font = '36px Courier New';
+                    sCtx.fillText("TARGET CODE: " + codeTarget, 250, 180);
+                    sCtx.fillStyle = '#00ff66';
+                    sCtx.fillText("YOUR INPUT: " + inputVal, 270, 260);
+
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("TYPE THE 3-DIGIT CODE USING KEYBOARD NUMBERS", 20, 55);
+                }, 30);
+            }
+
+            // --- GAME 10: Time Rift Catcher ---
+            else if (id === 10) {
+                let basketX = 400, items = [];
+                window.onkeydown = (e) => {
+                    if(e.key === 'ArrowLeft' && basketX > 50) basketX -= 35;
+                    if(e.key === 'ArrowRight' && basketX < 780) basketX += 35;
+                };
+                currentGameInterval = setInterval(() => {
+                    if(gameOver) return;
+                    sCtx.fillStyle = '#01030d'; sCtx.fillRect(0, 0, 850, 460);
+
+                    if(Math.random() < 0.04) {
+                        items.push({x: Math.random() * 750 + 50, y: 0, type: Math.random() > 0.3 ? 'good' : 'bad'});
+                    }
+
+                    items.forEach(it => {
+                        it.y += 5;
+                        sCtx.fillStyle = (it.type === 'good') ? '#00ff66' : '#ff007f';
+                        sCtx.fillRect(it.x, it.y, 30, 30);
+
+                        if(it.y > 400 && Math.abs(it.x - basketX) < 40) {
+                            if(it.type === 'good') score += 100;
+                            else gameOver = true;
+                            items.splice(items.indexOf(it), 1);
+                        }
+                    });
+                    items = items.filter(it => it.y < 460);
+
+                    // Basket
+                    sCtx.fillStyle = '#00f0ff'; sCtx.fillRect(basketX, 420, 60, 20);
+
+                    sCtx.fillStyle = '#fff'; sCtx.font = '16px Courier New';
+                    sCtx.fillText("SCORE: " + score, 20, 30);
+                    sCtx.fillText("CATCH GREEN CLOCKS, AVOID PINK BOMBS", 20, 55);
+
+                    if(gameOver) drawGameOver(sCtx, score);
+                }, 30);
+            }
+        }
+
+        function drawGameOver(sCtx, score) {
+            sCtx.fillStyle = 'rgba(255,0,0,0.85)';
+            sCtx.fillRect(200, 160, 450, 120);
+            sCtx.fillStyle = '#fff';
+            sCtx.font = '22px Courier New';
+            sCtx.fillText("GAME OVER! Score: " + score, 230, 210);
+            sCtx.font = '14px Courier New';
+            sCtx.fillText("Click 'QUIT [X]' above to choose another game.", 215, 245);
+        }
+
+        function closeGameModal() {
+            if(currentGameInterval) clearInterval(currentGameInterval);
+            document.getElementById('gameModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
