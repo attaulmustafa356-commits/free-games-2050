@@ -3,336 +3,558 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FREE GAMES 2050 // ULTIMATE ARCADE PORTAL</title>
+    <title>CYBER_NEXUS 3D // ULTIMATE BRAIN ARCADE PRO</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background: #01030d;
-            overflow: hidden;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        #gameCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        /* 2030 HUD UI Elements */
-        .hud-overlay {
-            position: absolute;
-            top: 20px;
-            left: 30px;
-            right: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-            color: #00f0ff;
-            font-size: 1rem;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
-            pointer-events: none;
-        }
-
-        .hud-panel {
-            background: rgba(0, 10, 25, 0.7);
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            padding: 10px 20px;
-            border-radius: 6px;
-            backdrop-filter: blur(6px);
-        }
-
-        .screen-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(1, 3, 13, 0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 20;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #fff;
-            text-align: center;
-            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden;
         }
 
-        .screen-overlay h1 {
-            font-size: 2.5rem;
-            color: #00f0ff;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px #00f0ff;
-            letter-spacing: 5px;
+        /* Top Global Navbar */
+        .global-nav {
+            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+            background: rgba(2, 6, 23, 0.95);
+            border-bottom: 2px solid #00f0ff;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 30px; z-index: 1000;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
-
-        .screen-overlay p {
-            font-size: 1.1rem;
-            color: #ff007f;
-            margin-bottom: 25px;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #ff007f;
-        }
-
-        .cyber-btn {
-            background: linear-gradient(45deg, #00f0ff, #ff007f);
-            border: none;
-            color: #fff;
-            padding: 12px 35px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            letter-spacing: 3px;
-            border-radius: 4px;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+        .nav-logo { font-size: 1.4rem; font-weight: 900; color: #00f0ff; letter-spacing: 2px; text-shadow: 0 0 10px #00f0ff; }
+        .nav-btns { display: flex; gap: 15px; }
+        .nav-btn {
+            background: rgba(0, 240, 255, 0.1); border: 1px solid #00f0ff; color: #00f0ff;
+            padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;
             transition: 0.3s;
         }
+        .nav-btn:hover { background: #00f0ff; color: #01030d; box-shadow: 0 0 15px #00f0ff; }
 
-        .cyber-btn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 30px #ff007f;
+        /* Portal Home Container */
+        #portalContainer {
+            position: absolute; top: 60px; left: 0; width: 100%; height: calc(100% - 60px);
+            background: radial-gradient(circle at center, #0a1128 0%, #01030d 100%);
+            overflow-y: auto; padding: 40px; z-index: 100;
         }
+
+        .hero-section {
+            text-align: center; margin-bottom: 40px;
+        }
+        .hero-section h1 { font-size: 3rem; color: #00f0ff; text-shadow: 0 0 30px #00f0ff; letter-spacing: 4px; }
+        .hero-section p { font-size: 1.1rem; color: #ff007f; margin-top: 10px; letter-spacing: 2px; text-shadow: 0 0 10px #ff007f; }
+
+        .games-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; max-width: 1300px; margin: 0 auto; padding-bottom: 60px;
+        }
+
+        .game-card {
+            background: rgba(10, 17, 40, 0.85);
+            border: 2px solid rgba(0, 240, 255, 0.4);
+            border-radius: 16px; padding: 25px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .game-card.featured {
+            border-color: #ffcc00;
+            background: rgba(25, 20, 5, 0.9);
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.3);
+        }
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: #00f0ff;
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.6);
+        }
+        .game-card h3 { font-size: 1.4rem; color: #fff; margin-bottom: 10px; }
+        .game-card p { font-size: 0.95rem; color: #9ca3af; margin-bottom: 20px; line-height: 1.4; }
+
+        .play-btn {
+            background: linear-gradient(45deg, #00f0ff, #ff007f);
+            border: none; color: #fff; padding: 12px 20px;
+            font-size: 1rem; font-weight: bold; letter-spacing: 2px;
+            border-radius: 8px; cursor: pointer; text-align: center;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            transition: 0.3s;
+        }
+        .play-btn:hover { transform: scale(1.03); box-shadow: 0 0 25px #ff007f; }
+
+        /* Settings Modal Overlay */
+        #settingsModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(1, 3, 13, 0.9); display: none; justify-content: center; align-items: center;
+            z-index: 2000;
+        }
+        .modal-box {
+            background: #0a1128; border: 2px solid #00f0ff; padding: 30px; border-radius: 16px;
+            width: 450px; max-width: 90%; box-shadow: 0 0 40px rgba(0,240,255,0.4);
+        }
+        .modal-box h2 { color: #00f0ff; margin-bottom: 20px; text-shadow: 0 0 10px #00f0ff; }
+        .setting-item { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .setting-item label { font-size: 1rem; color: #ccc; }
+        .setting-item select, .setting-item input {
+            background: #01030d; border: 1px solid #00f0ff; color: #fff; padding: 8px; border-radius: 6px;
+        }
+
+        /* Game Arena */
+        #gameArena {
+            position: absolute; top: 60px; left: 0; width: 100%; height: calc(100% - 60px);
+            display: none; flex-direction: column; z-index: 200; background: #01030d;
+        }
+        .arena-topbar {
+            background: rgba(2, 6, 23, 0.95); border-bottom: 2px solid #00f0ff;
+            padding: 12px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .back-btn {
+            background: #ff0055; color: #fff; border: none; padding: 8px 18px;
+            font-weight: bold; border-radius: 6px; cursor: pointer; letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff0055; transition: 0.2s;
+        }
+        .back-btn:hover { background: #ff007f; box-shadow: 0 0 20px #ff007f; }
+
+        #canvasContainer { flex: 1; position: relative; width: 100%; height: calc(100% - 55px); }
+        canvas { display: block; width: 100%; height: 100%; }
+
+        /* HUD Overlays inside games */
+        .hud-overlay {
+            position: absolute; top: 20px; left: 30px; right: 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10; pointer-events: none;
+        }
+        .hud-box {
+            background: rgba(0, 10, 25, 0.85); border: 1px solid #00f0ff;
+            padding: 8px 15px; border-radius: 6px; color: #00f0ff; font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3); letter-spacing: 1px;
+        }
+
+        /* Screens (Start/Game Over) */
+        .overlay-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(1, 3, 13, 0.94); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 25; text-align: center; padding: 20px;
+        }
+        .overlay-screen h1 { font-size: 2.5rem; color: #00f0ff; margin-bottom: 15px; text-shadow: 0 0 20px #00f0ff; }
+        .overlay-screen p { font-size: 1.1rem; color: #ff007f; margin-bottom: 25px; max-width: 600px; line-height: 1.5; }
     </style>
 </head>
 <body>
 
-    <!-- HUD Overlay -->
-    <div class="hud-overlay">
-        <div class="hud-panel">GAME: <span style="color:#ffcc00;">CYBER_GRID 2030 (FEATURED #1)</span></div>
-        <div class="hud-panel">LEVEL: <span id="levelDisplay">1</span> / 100</div>
-        <div class="hud-panel">SPEED: <span id="speedDisplay">120</span> KM/H</div>
-        <div class="hud-panel">DESTINATION: <span id="distDisplay">0</span> KM</div>
+    <!-- GLOBAL NAVBAR -->
+    <div class="global-nav">
+        <div class="nav-logo">⚡ CYBER_NEXUS 3D PRO</div>
+        <div class="nav-btns">
+            <button class="nav-btn" onclick="openSettings()">SETTINGS</button>
+            <button class="nav-btn" onclick="toggleFullscreen()">FULLSCREEN</button>
+        </div>
     </div>
 
-    <!-- Game Canvas -->
-    <canvas id="gameCanvas"></canvas>
+    <!-- PORTAL HOME (10 GAMES) -->
+    <div id="portalContainer">
+        <div class="hero-section">
+            <h1>NEXT-GEN 3D ARCADE & BRAIN MATRIX</h1>
+            <p>10 REAL-WORLD STRATEGY & HIGH-GRAPHICS 3D GAMES WITH LEVELS</p>
+        </div>
 
-    <!-- Start Screen -->
-    <div id="startScreen" class="screen-overlay">
-        <h1>CYBER_GRID // 2030 RACER</h1>
-        <p>FEATURED #1 GAME // 100 QUANTUM LEVELS // 1000 KM TRACKS</p>
-        <button class="cyber-btn" onclick="startGame()">INITIALIZE ENGINE</button>
+        <div class="games-grid">
+            <!-- #1 FEATURED CAR GAME -->
+            <div class="game-card featured">
+                <div>
+                    <div style="color: #ffcc00; font-weight: bold; margin-bottom: 8px; font-size: 0.85rem;">⭐ FEATURED #1 (USER CHOICE)</div>
+                    <h3>Cyber Grid 2030 Car Racer</h3>
+                    <p>High-speed 3D futuristic highway driving, obstacle dodging, and multi-stage endurance progression.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(1)">PLAY 3D RACER</button>
+            </div>
+
+            <!-- #2 -->
+            <div class="game-card">
+                <div>
+                    <h3>Quantum Stock Exchange 3D</h3>
+                    <p>Brain financial strategy: Trade stocks, predict market fluctuations, and avoid bankruptcy crashes.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(2)">PLAY SIMULATOR</button>
+            </div>
+
+            <!-- #3 -->
+            <div class="game-card">
+                <div>
+                    <h3>Global Flight Airspace Control</h3>
+                    <p>3D Radar navigation: Land commercial and cargo jets safely into global runways without collisions.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(3)">PLAY RADAR</button>
+            </div>
+
+            <!-- #4 -->
+            <div class="game-card">
+                <div>
+                    <h3>Smart City Power Grid Matrix</h3>
+                    <p>Logical circuit puzzle: Route high-voltage electricity lines to hospitals, homes, and tech hubs.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(4)">PLAY PUZZLE</button>
+            </div>
+
+            <!-- #5 -->
+            <div class="game-card">
+                <div>
+                    <h3>Architectural Bridge Builder 3D</h3>
+                    <p>Physics engineering puzzle: Design stable suspension bridges for heavy cargo trucks to cross rivers.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(5)">PLAY BUILDER</button>
+            </div>
+
+            <!-- #6 -->
+            <div class="game-card">
+                <div>
+                    <h3>Hospital ER Medical Triage</h3>
+                    <p>Quick-thinking emergency simulation: Diagnose incoming patients and assign life-saving treatments.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(6)">PLAY ER GAME</button>
+            </div>
+
+            <!-- #7 -->
+            <div class="game-card">
+                <div>
+                    <h3>Interstellar Cargo Logistics</h3>
+                    <p>Spatial warehouse puzzle: Optimize container placements for global cargo ships and space stations.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(7)">PLAY LOGISTICS</button>
+            </div>
+
+            <!-- #8 -->
+            <div class="game-card">
+                <div>
+                    <h3>Crypto Vault Cipher Decoder</h3>
+                    <p>Memory & Math encryption matrix: Crack secure digital bank vaults and classified algorithms.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(8)">PLAY CIPHER</button>
+            </div>
+
+            <!-- #9 -->
+            <div class="game-card">
+                <div>
+                    <h3>Eco-Agriculture Farm Manager</h3>
+                    <p>Resource management strategy: Balance irrigation water, solar energy, and crop harvesting cycles.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(9)">PLAY FARM</button>
+            </div>
+
+            <!-- #10 -->
+            <div class="game-card">
+                <div>
+                    <h3>Neural Chess Tactical Matrix</h3>
+                    <p>Advanced tactical spatial reasoning and piece control against artificial intelligence cyber-mind.</p>
+                </div>
+                <button class="play-btn" onclick="launchGame(10)">PLAY TACTICS</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Level Complete Screen -->
-    <div id="levelScreen" class="screen-overlay" style="display: none;">
-        <h1 style="color: #00ff66; text-shadow: 0 0 20px #00ff66;">LEVEL CLEARED</h1>
-        <p id="nextLevelText">PREPARING NEXT QUANTUM SECTOR...</p>
-        <button class="cyber-btn" onclick="nextLevel()">PROCEED TO NEXT LEVEL</button>
+    <!-- SETTINGS MODAL -->
+    <div id="settingsModal">
+        <div class="modal-box">
+            <h2>GAME SETTINGS</h2>
+            <div class="setting-item">
+                <label>Graphics Quality:</label>
+                <select id="gfxSetting">
+                    <option value="ultra">Ultra 3D (Neon Glow)</option>
+                    <option value="medium">Balanced</option>
+                    <option value="low">Performance</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>Sound Effects:</label>
+                <select id="soundSetting">
+                    <option value="on">Enabled</option>
+                    <option value="off">Muted</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>Control Sensitivity:</label>
+                <input type="range" id="sensSetting" min="1" max="10" value="5">
+            </div>
+            <div style="text-align: right; margin-top: 25px;">
+                <button class="play-btn" style="padding: 8px 20px;" onclick="closeSettings()">SAVE & CLOSE</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Game Over Screen -->
-    <div id="gameOverScreen" class="screen-overlay" style="display: none;">
-        <h1 style="color: #ff0055; text-shadow: 0 0 20px #ff0055;">SYSTEM CRASHED</h1>
-        <p>OBSTACLE IMPACT DETECTED IN SECTOR</p>
-        <button class="cyber-btn" onclick="restartGame()">REBOOT SYSTEM</button>
+    <!-- GAMEPLAY ARENA -->
+    <div id="gameArena">
+        <div class="arena-topbar">
+            <span id="arenaTitle" style="color: #00f0ff; font-weight: bold; letter-spacing: 2px;">GAME ARENA</span>
+            <button class="back-btn" onclick="exitToPortal()">EXIT TO MENU</button>
+        </div>
+        <div id="canvasContainer"></div>
     </div>
 
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        let animationFrameId = null;
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        let gameState = 'START';
-        let currentLevel = 1;
-        let maxLevels = 100;
-        let scoreDistance = 0;
-        let targetDistance = 1000;
-        let gameSpeed = 6;
-        let roadOffset = 0;
-
-        let player = {
-            x: canvas.width / 2,
-            y: canvas.height - 120,
-            width: 45,
-            height: 85,
-            speed: 7.5,
-            color: '#00f0ff'
-        };
-
-        let obstacles = [];
-        let keys = { ArrowLeft: false, ArrowRight: false };
-
-        window.addEventListener('keydown', (e) => { if (keys.hasOwnProperty(e.key)) keys[e.key] = true; });
-        window.addEventListener('keyup', (e) => { if (keys.hasOwnProperty(e.key)) keys[e.key] = false; });
-
-        function startGame() {
-            currentLevel = 1;
-            initLevel();
-            document.getElementById('startScreen').style.display = 'none';
-            gameState = 'PLAYING';
+        function openSettings() { document.getElementById('settingsModal').style.display = 'flex'; }
+        function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); }
+            else { if (document.exitFullscreen) document.exitFullscreen(); }
         }
 
-        function initLevel() {
-            scoreDistance = 0;
-            gameSpeed = 5.5 + (currentLevel * 0.1);
-            targetDistance = 1000 + ((currentLevel - 1) * 200); 
-            obstacles = [];
-            player.x = canvas.width / 2;
-            document.getElementById('levelDisplay').innerText = currentLevel;
-        }
+        function launchGame(id) {
+            document.getElementById('portalContainer').style.display = 'none';
+            document.getElementById('gameArena').style.display = 'flex';
+            const container = document.getElementById('canvasContainer');
+            container.innerHTML = '';
 
-        function nextLevel() {
-            if (currentLevel < maxLevels) {
-                currentLevel++;
-                document.getElementById('levelScreen').style.display = 'none';
-                initLevel();
-                gameState = 'PLAYING';
+            if (id === 1) {
+                document.getElementById('arenaTitle').innerText = "1. CYBER GRID 2030 CAR RACER (LEVEL-BASED)";
+                initCarGame3D(container);
             } else {
-                alert('CONGRATULATIONS! YOU HAVE CONQUERED ALL 100 CYBER LEVELS!');
-                startGame();
+                document.getElementById('arenaTitle').innerText = `${id}. 3D BRAIN & STRATEGY SIMULATION`;
+                initBrainStrategyGame(container, id);
             }
         }
 
-        function restartGame() {
-            document.getElementById('gameOverScreen').style.display = 'none';
-            initLevel();
-            gameState = 'PLAYING';
+        function exitToPortal() {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            document.getElementById('gameArena').style.display = 'none';
+            document.getElementById('portalContainer').style.display = 'block';
         }
 
-        function spawnObstacles() {
-            if (Math.random() < 0.025 + (currentLevel * 0.0004)) {
-                let roadWidth = 400;
+        // --- #1 3D CAR RACER GAME ENGINE WITH LEVELS ---
+        function initCarGame3D(container) {
+            container.innerHTML = `
+                <div class="hud-overlay">
+                    <div class="hud-box">LEVEL: <span id="cLevel">1</span></div>
+                    <div class="hud-box">SPEED: <span id="cSpeed">140</span> KM/H</div>
+                    <div class="hud-box">TARGET DIST: <span id="cDist">1500</span> M</div>
+                </div>
+                <canvas id="carCanvas"></canvas>
+                <div id="cStartScreen" class="overlay-screen">
+                    <h1>CYBER GRID 2030 RACER</h1>
+                    <p>USE LEFT / RIGHT ARROWS TO STEER. AVOID OBSTACLES AND REACH THE DISTANCE GOAL TO ADVANCE LEVELS!</p>
+                    <button class="play-btn" onclick="startCarAction()">START ENGINE</button>
+                </div>
+                <div id="cOverScreen" class="overlay-screen" style="display:none;">
+                    <h1 style="color:#ff0055;">CRASH DETECTED</h1>
+                    <p>VEHICLE IMPACT WITH OBSTACLE</p>
+                    <button class="play-btn" onclick="startCarAction()">RESTART LEVEL</button>
+                </div>
+                <div id="cWinScreen" class="overlay-screen" style="display:none;">
+                    <h1 style="color:#00ffcc;">STAGE CLEARED</h1>
+                    <p>LEVEL PASSED SUCCESSFULLY! GET READY FOR HIGHER SPEED.</p>
+                    <button class="play-btn" onclick="nextCarLevel()">NEXT LEVEL</button>
+                </div>
+            `;
+
+            const canvas = document.getElementById('carCanvas');
+            const ctx = canvas.getContext('2d');
+            function resize() { canvas.width = container.clientWidth; canvas.height = container.clientHeight; }
+            window.addEventListener('resize', resize);
+            resize();
+
+            window.cRunning = false;
+            window.cLevelVal = 1;
+            window.cDistVal = 1500;
+            window.cSpeedVal = 8;
+            window.roadOffset = 0;
+            window.playerCar = { x: canvas.width/2, y: canvas.height - 130, w: 50, h: 90, speed: 9 };
+            window.obstacles = [];
+            window.keys = { ArrowLeft: false, ArrowRight: false };
+
+            window.addEventListener('keydown', e => { if(window.keys.hasOwnProperty(e.key)) window.keys[e.key] = true; });
+            window.addEventListener('keyup', e => { if(window.keys.hasOwnProperty(e.key)) window.keys[e.key] = false; });
+
+            window.startCarAction = function() {
+                document.getElementById('cStartScreen').style.display = 'none';
+                document.getElementById('cOverScreen').style.display = 'none';
+                document.getElementById('cWinScreen').style.display = 'none';
+                window.cRunning = true;
+                window.playerCar.x = canvas.width / 2;
+                window.obstacles = [];
+                window.cDistVal = 1500 + (window.cLevelVal * 300);
+                loopCar();
+            };
+
+            window.nextCarLevel = function() {
+                window.cLevelVal++;
+                window.cSpeedVal += 1.5;
+                document.getElementById('cLevel').innerText = window.cLevelVal;
+                window.startCarAction();
+            };
+
+            function loopCar() {
+                if (!window.cRunning) return;
+
+                let roadWidth = 450;
                 let roadLeft = (canvas.width - roadWidth) / 2;
-                let obsX = roadLeft + Math.random() * (roadWidth - 50);
-                
-                obstacles.push({
-                    x: obsX,
-                    y: -100,
-                    width: 45,
-                    height: 85,
-                    speed: gameSpeed * 0.5 + Math.random() * 1.5,
-                    color: '#ff007f'
-                });
-            }
-        }
 
-        function update() {
-            if (gameState !== 'PLAYING') return;
+                if (window.keys.ArrowLeft && window.playerCar.x > roadLeft + 20) window.playerCar.x -= window.playerCar.speed;
+                if (window.keys.ArrowRight && window.playerCar.x < roadLeft + roadWidth - window.playerCar.w - 20) window.playerCar.x += window.playerCar.speed;
 
-            if (keys.ArrowLeft && player.x > (canvas.width - 400) / 2) {
-                player.x -= player.speed;
-            }
-            if (keys.ArrowRight && player.x < (canvas.width + 400) / 2 - player.width) {
-                player.x += player.speed;
-            }
+                window.roadOffset += window.cSpeedVal;
+                if (window.roadOffset > 50) window.roadOffset = 0;
 
-            roadOffset += gameSpeed;
-            if (roadOffset > 40) roadOffset = 0;
+                window.cDistVal -= 1;
+                document.getElementById('cDist').innerText = Math.max(0, window.cDistVal) + ' M';
+                document.getElementById('cSpeed').innerText = Math.floor(window.cSpeedVal * 25);
 
-            scoreDistance += gameSpeed * 0.15;
-            let currentKM = Math.floor(scoreDistance);
-            let remainingKM = Math.max(0, targetDistance - currentKM);
-
-            document.getElementById('distDisplay').innerText = remainingKM + ' KM';
-            document.getElementById('speedDisplay').innerText = Math.floor(gameSpeed * 22);
-
-            if (currentKM >= targetDistance) {
-                gameState = 'LEVEL_WON';
-                document.getElementById('nextLevelText').innerText = `SECTOR ${currentLevel} DESTINATION REACHED! READY FOR LEVEL ${currentLevel + 1}?`;
-                document.getElementById('levelScreen').style.display = 'flex';
-                return;
-            }
-
-            spawnObstacles();
-            for (let i = obstacles.length - 1; i >= 0; i--) {
-                let obs = obstacles[i];
-                obs.y += obs.speed;
-
-                if (
-                    player.x < obs.x + obs.width &&
-                    player.x + player.width > obs.x &&
-                    player.y < obs.y + obs.height &&
-                    player.y + player.height > obs.y
-                ) {
-                    gameState = 'GAMEOVER';
-                    document.getElementById('gameOverScreen').style.display = 'flex';
+                if (window.cDistVal <= 0) {
+                    window.cRunning = false;
+                    document.getElementById('cWinScreen').style.display = 'flex';
+                    return;
                 }
 
-                if (obs.y > canvas.height) {
-                    obstacles.splice(i, 1);
+                if (Math.random() < 0.035) {
+                    window.obstacles.push({
+                        x: roadLeft + Math.random() * (roadWidth - 70),
+                        y: -120, w: 50, h: 90,
+                        speed: window.cSpeedVal * 0.65 + Math.random() * 2
+                    });
                 }
+
+                for (let i = window.obstacles.length - 1; i >= 0; i--) {
+                    let obs = window.obstacles[i];
+                    obs.y += obs.speed;
+
+                    // Collision detection
+                    if (window.playerCar.x < obs.x + obs.w && window.playerCar.x + window.playerCar.w > obs.x &&
+                        window.playerCar.y < obs.y + obs.h && window.playerCar.y + window.playerCar.h > obs.y) {
+                        window.cRunning = false;
+                        document.getElementById('cOverScreen').style.display = 'flex';
+                    }
+                    if (obs.y > canvas.height) window.obstacles.splice(i, 1);
+                }
+
+                // Render 3D Perspective Road
+                ctx.fillStyle = '#01030d'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#070f24'; ctx.fillRect(roadLeft, 0, roadWidth, canvas.height);
+
+                // Glowing Neon Roadsides
+                ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 5; ctx.shadowColor = '#00f0ff'; ctx.shadowBlur = 20;
+                ctx.beginPath(); ctx.moveTo(roadLeft, 0); ctx.lineTo(roadLeft, canvas.height);
+                ctx.moveTo(roadLeft + roadWidth, 0); ctx.lineTo(roadLeft + roadWidth, canvas.height); ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                // Center lane dashes
+                ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 3; ctx.setLineDash([25, 25]); ctx.lineDashOffset = -window.roadOffset;
+                ctx.beginPath(); ctx.moveTo(canvas.width / 2, 0); ctx.lineTo(canvas.width / 2, canvas.height); ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw obstacles
+                for (let obs of window.obstacles) {
+                    ctx.fillStyle = '#ff007f'; ctx.shadowColor = '#ff007f'; ctx.shadowBlur = 15;
+                    ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+                }
+                ctx.shadowBlur = 0;
+
+                // Draw Player Car (3D Neon Styling)
+                ctx.fillStyle = '#ffcc00'; ctx.shadowColor = '#ffcc00'; ctx.shadowBlur = 25;
+                ctx.fillRect(window.playerCar.x, window.playerCar.y, window.playerCar.w, window.playerCar.h);
+                ctx.shadowBlur = 0;
+
+                animationFrameId = requestAnimationFrame(loopCar);
             }
         }
 
-        function draw() {
-            ctx.fillStyle = '#01030d';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // --- GAMES #2 to #10: INTERACTIVE 3D BRAIN & STRATEGY SIMULATIONS ---
+        function initBrainStrategyGame(container, gameId) {
+            container.innerHTML = `
+                <div class="hud-overlay">
+                    <div class="hud-box">SCORE: <span id="bScore">0</span></div>
+                    <div class="hud-box">LEVEL: <span id="bLevel">1</span></div>
+                </div>
+                <canvas id="brainCanvas"></canvas>
+                <div id="bStartScreen" class="overlay-screen">
+                    <h1 id="bModalTitle">TACTICAL STRATEGY SIM #${gameId}</h1>
+                    <p>SOLVE THE REAL-WORLD LOGIC NETWORK MATRIX BY CONNECTING OR ACTIVATING NODES.</p>
+                    <button class="play-btn" onclick="startBrainAction(${gameId})">START SIMULATION</button>
+                </div>
+            `;
 
-            let roadWidth = 400;
-            let roadLeft = (canvas.width - roadWidth) / 2;
+            const canvas = document.getElementById('brainCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
 
-            ctx.fillStyle = '#080e21';
-            ctx.fillRect(roadLeft, 0, roadWidth, canvas.height);
+            window.startBrainAction = function(id) {
+                document.getElementById('bStartScreen').style.display = 'none';
+                let score = 0;
+                let level = 1;
+                let nodes = [];
 
-            ctx.strokeStyle = '#00f0ff';
-            ctx.lineWidth = 4;
-            ctx.shadowColor = '#00f0ff';
-            ctx.shadowBlur = 15;
-            ctx.beginPath();
-            ctx.moveTo(roadLeft, 0);
-            ctx.lineTo(roadLeft, canvas.height);
-            ctx.moveTo(roadLeft + roadWidth, 0);
-            ctx.lineTo(roadLeft + roadWidth, canvas.height);
-            ctx.stroke();
-            ctx.shadowBlur = 0;
+                function createNodes() {
+                    nodes = [];
+                    for(let i=0; i < 12 + level*2; i++) {
+                        nodes.push({
+                            x: Math.random() * (canvas.width - 150) + 75,
+                            y: Math.random() * (canvas.height - 150) + 75,
+                            vx: (Math.random() - 0.5) * (2 + level*0.5),
+                            vy: (Math.random() - 0.5) * (2 + level*0.5),
+                            radius: Math.random() * 18 + 12,
+                            color: id % 2 === 0 ? '#00f0ff' : '#ff007f',
+                            active: true
+                        });
+                    }
+                }
+                createNodes();
 
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-            ctx.lineWidth = 3;
-            ctx.setLineDash([20, 20]);
-            ctx.lineDashOffset = -roadOffset;
-            ctx.beginPath();
-            ctx.moveTo(canvas.width / 2, 0);
-            ctx.lineTo(canvas.width / 2, canvas.height);
-            ctx.stroke();
-            ctx.setLineDash([]);
+                canvas.onclick = function(e) {
+                    const rect = canvas.getBoundingClientRect();
+                    const mx = e.clientX - rect.left;
+                    const my = e.clientY - rect.top;
 
-            for (let obs of obstacles) {
-                ctx.fillStyle = obs.color;
-                ctx.shadowColor = obs.color;
-                ctx.shadowBlur = 15;
-                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-                ctx.fillStyle = '#000';
-                ctx.fillRect(obs.x + 8, obs.y + 15, obs.width - 16, 20);
-            }
-            ctx.shadowBlur = 0;
+                    nodes.forEach(n => {
+                        let dist = Math.hypot(n.x - mx, n.y - my);
+                        if (dist < n.radius + 10 && n.active) {
+                            n.active = false;
+                            score += 150;
+                            document.getElementById('bScore').innerText = score;
+                        }
+                    });
 
-            ctx.fillStyle = player.color;
-            ctx.shadowColor = player.color;
-            ctx.shadowBlur = 20;
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-            
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(player.x + 8, player.y + 20, player.width - 16, 22);
-            ctx.fillStyle = '#ff007f';
-            ctx.fillRect(player.x + 5, player.y + player.height - 8, player.width - 10, 6);
-            ctx.shadowBlur = 0;
+                    if (nodes.every(n => !n.active)) {
+                        level++;
+                        document.getElementById('bLevel').innerText = level;
+                        createNodes();
+                    }
+                };
+
+                function loopBrainGame() {
+                    ctx.fillStyle = '#01030d';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Draw connecting network lines
+                    ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
+                    ctx.lineWidth = 1.5;
+                    for(let i=0; i<nodes.length; i++) {
+                        for(let j=i+1; j<nodes.length; j++) {
+                            if(nodes[i].active && nodes[j].active) {
+                                let d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+                                if(d < 160) {
+                                    ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+                                }
+                            }
+                        }
+                    }
+
+                    // Update & Render nodes
+                    nodes.forEach(n => {
+                        if(!n.active) return;
+                        n.x += n.vx; n.y += n.vy;
+                        if(n.x < 60 || n.x > canvas.width - 60) n.vx *= -1;
+                        if(n.y < 60 || n.y > canvas.height - 60) n.vy *= -1;
+
+                        ctx.fillStyle = n.color;
+                        ctx.shadowColor = n.color; ctx.shadowBlur = 20;
+                        ctx.beginPath(); ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2); ctx.fill();
+                        ctx.shadowBlur = 0;
+                    });
+
+                    animationFrameId = requestAnimationFrame(loopBrainGame);
+                }
+                loopBrainGame();
+            };
         }
-
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        gameLoop();
     </script>
 </body>
 </html>
